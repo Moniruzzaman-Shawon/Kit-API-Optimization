@@ -1,0 +1,30 @@
+# Kit Documentation
+
+## Packages
+
+- [kit-core](core.md) — Shared utilities
+- [kit-api](api.md) — API optimization tools
+- [kit-media](media.md) — Media handling
+- [kit-pay](pay.md) — Payment processing
+
+## Architecture
+
+Kit is a modular monorepo. Each package is independently installable via pip, with `kit-core` as the shared dependency.
+
+```
+kit-core (shared: redis, config, logging, exceptions)
+  ├── kit-api (rate limiting, circuit breakers, retries)
+  ├── kit-media (uploads, CDN, media processing)
+  └── kit-pay (payments, webhooks, subscriptions)
+```
+
+## Configuration
+
+All packages read configuration from environment variables prefixed with `KIT_`:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `KIT_REDIS_URL` | `redis://localhost:6379/0` | Redis connection URL |
+| `KIT_LOG_LEVEL` | `INFO` | Logging level |
+| `KIT_ENVIRONMENT` | `development` | Environment name |
+| `KIT_DEBUG` | `false` | Debug mode |

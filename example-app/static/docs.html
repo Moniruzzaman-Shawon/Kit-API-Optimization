@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bastion API — Documentation</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-2: #232733;
+      --border: #2e3345;
+      --text: #e2e4ed;
+      --text-muted: #8b8fa3;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --success: #00b894;
+      --warning: #fdcb6e;
+      --danger: #e17055;
+      --info: #74b9ff;
+      --get: #00b894;
+      --post: #6c5ce7;
+      --put: #fdcb6e;
+      --delete: #e17055;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Navbar ─────────────────────────────────── */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 100;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .navbar-brand .icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .navbar-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .navbar-links a:hover, .navbar-links a.active {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    /* ── Layout ─────────────────────────────────── */
+    .layout {
+      display: flex;
+      margin-top: 64px;
+    }
+
+    /* ── Sidebar ────────────────────────────────── */
+    .sidebar {
+      width: 280px;
+      height: calc(100vh - 64px);
+      position: fixed;
+      top: 64px;
+      left: 0;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 8px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      padding: 8px 24px;
+      margin-top: 16px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-link:hover {
+      color: var(--text);
+      background: var(--surface-2);
+      border-left-color: var(--accent);
+    }
+
+    .method-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      min-width: 40px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .method-badge.get { background: rgba(0,184,148,0.15); color: var(--get); }
+    .method-badge.post { background: rgba(108,92,231,0.15); color: var(--post); }
+    .method-badge.put { background: rgba(253,203,110,0.15); color: var(--put); }
+    .method-badge.delete { background: rgba(225,112,85,0.15); color: var(--delete); }
+
+    /* ── Main Content ───────────────────────────── */
+    .main {
+      margin-left: 280px;
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 960px;
+    }
+
+    /* ── Hero ────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 60px 0 48px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-light), var(--info));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .hero-badge.api { border-color: var(--accent); color: var(--accent-light); }
+    .hero-badge.media { border-color: var(--success); color: var(--success); }
+    .hero-badge.pay { border-color: var(--warning); color: var(--warning); }
+
+    /* ── Base URL ────────────────────────────────── */
+    .base-url {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .base-url label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .base-url code {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      color: var(--accent-light);
+    }
+
+    /* ── Section ─────────────────────────────────── */
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .section-icon.api { background: rgba(108,92,231,0.15); }
+    .section-icon.media { background: rgba(0,184,148,0.15); }
+    .section-icon.pay { background: rgba(253,203,110,0.15); }
+
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .section-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* ── Endpoint Card ───────────────────────────── */
+    .endpoint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .endpoint:hover {
+      border-color: var(--accent);
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .endpoint-header .method {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      min-width: 52px;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    .endpoint-header .method.get { background: rgba(0,184,148,0.15); color: var(--get); }
+    .endpoint-header .method.post { background: rgba(108,92,231,0.15); color: var(--post); }
+
+    .endpoint-header .path {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .endpoint-header .desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .endpoint-header .chevron {
+      color: var(--text-muted);
+      transition: transform 0.2s;
+      font-size: 14px;
+    }
+
+    .endpoint.open .chevron {
+      transform: rotate(90deg);
+    }
+
+    .endpoint-body {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .endpoint.open .endpoint-body {
+      display: block;
+    }
+
+    /* ── Params / Body ───────────────────────────── */
+    .param-section {
+      margin-top: 16px;
+    }
+
+    .param-section h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .param-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .param-table td {
+      font-size: 13px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .param-name {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-weight: 600;
+      color: var(--accent-light);
+    }
+
+    .param-type {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    .param-required {
+      font-size: 10px;
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    /* ── Code Block ──────────────────────────────── */
+    .code-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 12px;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .code-block .label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    /* ── Try It ──────────────────────────────────── */
+    .try-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+
+    .try-btn:hover {
+      background: var(--accent-light);
+      color: var(--bg);
+    }
+
+    .response-area {
+      margin-top: 12px;
+      display: none;
+    }
+
+    .response-area.show {
+      display: block;
+    }
+
+    .response-status {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .response-status.ok { color: var(--success); }
+    .response-status.err { color: var(--danger); }
+
+    /* ── Footer ──────────────────────────────────── */
+    .footer {
+      margin-top: 64px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    /* ── Scrollbar ────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="navbar-brand">
+      <div class="icon">B</div>
+      Bastion API
+    </a>
+    <div class="navbar-links">
+      <a href="#api" class="active">API Reference</a>
+      <a href="/docs" target="_blank">Swagger UI</a>
+      <a href="/redoc" target="_blank">ReDoc</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">API Optimization</div>
+        <a href="#rate-limiter" class="sidebar-link"><span class="method-badge get">GET</span> Rate Limiter</a>
+        <a href="#circuit-breaker" class="sidebar-link"><span class="method-badge post">POST</span> Circuit Breaker</a>
+        <a href="#retry-engine" class="sidebar-link"><span class="method-badge post">POST</span> Retry Engine</a>
+        <a href="#idempotency" class="sidebar-link"><span class="method-badge post">POST</span> Idempotency</a>
+        <a href="#cost-tracker" class="sidebar-link"><span class="method-badge post">POST</span> Cost Tracker</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Media Handling</div>
+        <a href="#media-transform" class="sidebar-link"><span class="method-badge post">POST</span> Transform</a>
+        <a href="#media-validate" class="sidebar-link"><span class="method-badge get">GET</span> Validate Type</a>
+        <a href="#cdn-router" class="sidebar-link"><span class="method-badge get">GET</span> CDN Router</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Payment Processing</div>
+        <a href="#webhooks" class="sidebar-link"><span class="method-badge post">POST</span> Webhooks</a>
+        <a href="#subscriptions" class="sidebar-link"><span class="method-badge post">POST</span> Subscriptions</a>
+        <a href="#budget" class="sidebar-link"><span class="method-badge post">POST</span> Budget</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Hero -->
+      <div class="hero">
+        <h1>Bastion API</h1>
+        <p>Production-grade API optimization toolkit — rate limiting, media handling, and payment processing in one unified platform.</p>
+        <div class="hero-badges">
+          <span class="hero-badge api">API Optimization</span>
+          <span class="hero-badge media">Media Handling</span>
+          <span class="hero-badge pay">Payment Processing</span>
+        </div>
+      </div>
+
+      <div class="base-url">
+        <label>Base URL</label>
+        <code>http://localhost:8000</code>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!--  API OPTIMIZATION                           -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div class="section" id="api">
+        <div class="section-header">
+          <div class="section-icon api">🛡️</div>
+          <div>
+            <h2>API Optimization</h2>
+            <p>Rate limiting, circuit breaking, retries, idempotency, and cost tracking</p>
+          </div>
+        </div>
+
+        <!-- Rate Limiter -->
+        <div class="endpoint" id="rate-limiter">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/rate-limit/test</span>
+            <span class="desc">Acquire a rate limit slot</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Sliding-window rate limiter. Allows 10 requests per 60 seconds per client. Hit this endpoint repeatedly to see rate limiting in action.</p>
+            <div class="param-section">
+              <h4>Query Parameters</h4>
+              <table class="param-table">
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                <tr>
+                  <td><span class="param-name">client_id</span></td>
+                  <td><span class="param-type">string</span></td>
+                  <td>Client identifier for rate limiting. Default: <code>user-1</code></td>
+                </tr>
+              </table>
+            </div>
+            <div class="code-block">
+              <div class="label">Example Request</div>
+              <pre>curl http://localhost:8000/api/rate-limit/test?client_id=user-1</pre>
+            </div>
+            <div class="code-block">
+              <div class="label">Response — 200 OK</div>
+              <pre>{
+  "status": "allowed",
+  "remaining": 9,
+  "client_id": "user-1"
+}</pre>
+            </div>
+            <div class="code-block">
+              <div class="label">Response — 429 Too Many Requests</div>
+              <pre>{
+  "error": "Rate limit exceeded",
+  "remaining": 0,
+  "window_seconds": 60
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/api/rate-limit/test?client_id=demo')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <!-- Rate Limit Remaining -->
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/rate-limit/remaining</span>
+            <span class="desc">Check remaining quota</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Returns how many requests are left in the current sliding window for a given client.</p>
+            <div class="code-block">
+              <div class="label">Example Request</div>
+              <pre>curl http://localhost:8000/api/rate-limit/remaining?client_id=user-1</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/api/rate-limit/remaining?client_id=demo')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <!-- Rate Limit Reset -->
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/rate-limit/reset</span>
+            <span class="desc">Reset rate limit counter</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Clears the rate limit counter for a client, restoring full quota.</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/rate-limit/reset?client_id=demo')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <!-- Circuit Breaker -->
+        <div class="endpoint" id="circuit-breaker">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/circuit/status</span>
+            <span class="desc">Circuit breaker state</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Returns the current circuit breaker state: <code>closed</code> (normal), <code>open</code> (blocking), or <code>half_open</code> (testing recovery).</p>
+            <div class="code-block">
+              <div class="label">Response</div>
+              <pre>{
+  "name": "external-api",
+  "state": "closed",
+  "failure_threshold": 3,
+  "recovery_timeout": 30
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/api/circuit/status')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/circuit/call</span>
+            <span class="desc">Simulate call through circuit</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Simulate success or failure. Send <code>{"success": false}</code> three times to trip the circuit open.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{ "success": false }</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/circuit/call', {success: false})">Try Failure</button>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/circuit/call', {success: true})" style="background: var(--success)">Try Success</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/circuit/reset</span>
+            <span class="desc">Force reset circuit to closed</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Manually resets the circuit breaker back to the closed state.</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/circuit/reset')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <!-- Retry Engine -->
+        <div class="endpoint" id="retry-engine">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/retry/demo</span>
+            <span class="desc">Retry with exponential backoff</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Demonstrates automatic retry with exponential backoff and jitter. The function fails <code>fail_times</code> before succeeding.</p>
+            <div class="param-section">
+              <h4>Query Parameters</h4>
+              <table class="param-table">
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                <tr>
+                  <td><span class="param-name">fail_times</span></td>
+                  <td><span class="param-type">integer</span></td>
+                  <td>Number of times to fail before succeeding. Default: <code>2</code>. Max: <code>3</code></td>
+                </tr>
+              </table>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/retry/demo?fail_times=2')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <!-- Idempotency -->
+        <div class="endpoint" id="idempotency">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/idempotent/order</span>
+            <span class="desc">Create order with idempotency</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Creates an order with idempotency protection. Send the same <code>Idempotency-Key</code> header twice — the second call returns the cached response.</p>
+            <div class="param-section">
+              <h4>Headers</h4>
+              <table class="param-table">
+                <tr><th>Name</th><th>Required</th><th>Description</th></tr>
+                <tr>
+                  <td><span class="param-name">Idempotency-Key</span></td>
+                  <td><span class="param-required">REQUIRED</span></td>
+                  <td>Unique key to ensure the request is processed only once</td>
+                </tr>
+              </table>
+            </div>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "item": "Widget",
+  "quantity": 3,
+  "price": 12.99
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/idempotent/order', {item:'Widget',quantity:3,price:12.99}, {'Idempotency-Key': 'doc-test-'+Date.now()})">Try it (new key)</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <!-- Cost Tracker -->
+        <div class="endpoint" id="cost-tracker">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/cost/record</span>
+            <span class="desc">Record API call cost</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Track the cost of an external API call by provider and endpoint.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "provider": "openai",
+  "endpoint": "chat/completions",
+  "cost": 0.03,
+  "tokens": 1500
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/api/cost/record', {provider:'openai',endpoint:'chat/completions',cost:0.03,tokens:1500})">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/cost/usage</span>
+            <span class="desc">View usage by provider</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Returns total cost and budget status for a provider in a given period.</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/api/cost/usage?provider=openai&period=daily')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!--  MEDIA HANDLING                             -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div class="section" id="media">
+        <div class="section-header">
+          <div class="section-icon media">📦</div>
+          <div>
+            <h2>Media Handling</h2>
+            <p>Image transforms, MIME validation, and intelligent CDN routing</p>
+          </div>
+        </div>
+
+        <div class="endpoint" id="media-transform">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/media/transform</span>
+            <span class="desc">Build CDN transform URL</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Generates an optimized CDN transformation URL with resize, format conversion, and quality parameters.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "source_url": "https://cdn.example.com/photos/hero.jpg",
+  "width": 800,
+  "height": 600,
+  "format": "webp",
+  "quality": 80,
+  "fit": "cover"
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/media/transform', {source_url:'https://cdn.example.com/photos/hero.jpg',width:800,height:600,format:'webp',quality:80,fit:'cover'})">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint" id="media-validate">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/media/validate</span>
+            <span class="desc">Validate MIME type</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Checks whether a content type is in the allowed media types list (images, video, audio, PDF).</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/media/validate?content_type=image/jpeg')">Try image/jpeg</button>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/media/validate?content_type=application/json')" style="background: var(--danger)">Try application/json</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint" id="cdn-router">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/media/cdn/resolve</span>
+            <span class="desc">Route to best CDN</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Resolves the optimal CDN URL based on the user's region and endpoint weights.</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/media/cdn/resolve?key=images/hero.jpg&region=us')">Try US region</button>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/media/cdn/resolve?key=images/hero.jpg&region=eu')" style="background: var(--info)">Try EU region</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/media/cdn/all</span>
+            <span class="desc">All CDN endpoints</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Returns URLs from all configured CDN endpoints for an asset.</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/media/cdn/all?key=images/hero.jpg')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <!--  PAYMENT PROCESSING                         -->
+      <!-- ═══════════════════════════════════════════ -->
+      <div class="section" id="payments">
+        <div class="section-header">
+          <div class="section-icon pay">💳</div>
+          <div>
+            <h2>Payment Processing</h2>
+            <p>Webhooks, subscription state machine, and budget enforcement</p>
+          </div>
+        </div>
+
+        <div class="endpoint" id="webhooks">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/pay/webhook/test</span>
+            <span class="desc">Process webhook (sandbox)</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Send a test webhook event. The <code>/test</code> provider skips signature verification. Events are auto-deduplicated by ID.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "id": "evt_123",
+  "type": "invoice.paid",
+  "created": 1700000000,
+  "data": { "amount": 5000 }
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/pay/webhook/test', {id:'evt_'+Date.now(),type:'invoice.paid',created:1700000000,data:{amount:5000}})">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint" id="subscriptions">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/pay/subscription/create</span>
+            <span class="desc">Create subscription</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Creates a new subscription starting in <code>TRIAL</code> state. Use the transition endpoint to move through the state machine.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "subscription_id": "sub_001",
+  "customer_id": "cust_123",
+  "plan_id": "plan_pro"
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/pay/subscription/create', {subscription_id:'sub_'+Date.now(),customer_id:'cust_123',plan_id:'plan_pro'})">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint" id="budget">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/pay/budget/set-limit</span>
+            <span class="desc">Set spending limit</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Set a monthly spending limit for a customer. Charges exceeding the limit will be blocked with a 402 response.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "customer_id": "cust_123",
+  "amount": 100.0,
+  "period": "monthly"
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/pay/budget/set-limit', {customer_id:'cust_demo',amount:100.0,period:'monthly'})">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/pay/budget/charge</span>
+            <span class="desc">Record charge</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Records a charge against a customer's budget. Returns 402 if the charge would exceed the spending limit.</p>
+            <div class="code-block">
+              <div class="label">Request Body</div>
+              <pre>{
+  "customer_id": "cust_123",
+  "amount": 25.0,
+  "description": "API usage",
+  "provider": "stripe"
+}</pre>
+            </div>
+            <button class="try-btn" onclick="tryEndpoint(this, 'POST', '/pay/budget/charge', {customer_id:'cust_demo',amount:25.0,description:'API usage',provider:'stripe'})">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+
+        <div class="endpoint">
+          <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/pay/budget/status</span>
+            <span class="desc">Check budget status</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="endpoint-body">
+            <p>Returns current spending vs. limit for a customer.</p>
+            <button class="try-btn" onclick="tryEndpoint(this, 'GET', '/pay/budget/status?customer_id=cust_demo')">Try it</button>
+            <div class="response-area"><div class="response-status"></div><div class="code-block"><pre class="response-body"></pre></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Bastion API v0.1.0 — Built by <a href="#">ProlificLogic</a></p>
+        <p style="margin-top: 8px;">Powered by FastAPI + Redis</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleEndpoint(header) {
+      header.closest('.endpoint').classList.toggle('open');
+    }
+
+    async function tryEndpoint(btn, method, path, body, headers) {
+      const endpoint = btn.closest('.endpoint-body');
+      const area = endpoint.querySelector('.response-area');
+      const statusEl = area.querySelector('.response-status');
+      const bodyEl = area.querySelector('.response-body');
+
+      area.classList.add('show');
+      statusEl.textContent = 'Loading...';
+      statusEl.className = 'response-status';
+      bodyEl.textContent = '';
+
+      try {
+        const opts = { method, headers: { 'Content-Type': 'application/json', ...(headers || {}) } };
+        if (body && method !== 'GET') opts.body = JSON.stringify(body);
+
+        const res = await fetch(path, opts);
+        const data = await res.json();
+
+        statusEl.textContent = `${res.status} ${res.statusText}`;
+        statusEl.className = 'response-status ' + (res.ok ? 'ok' : 'err');
+        bodyEl.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        statusEl.textContent = 'Error';
+        statusEl.className = 'response-status err';
+        bodyEl.textContent = err.message;
+      }
+    }
+  </script>
+</body>
+</html>

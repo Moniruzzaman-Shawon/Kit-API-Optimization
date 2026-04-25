@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kit"
+version = "0.1.0"
+description = "API optimization toolkit — rate limiting, media handling, and payment processing"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "Kit Team" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+]
+
+dependencies = [
+    "kit-core",
+    "kit-api",
+    "kit-media",
+    "kit-pay",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/kit"
+Documentation = "https://github.com/your-org/kit/tree/main/docs"
+Repository = "https://github.com/your-org/kit"
+
+[tool.hatch.build]
+skip-excluded-dirs = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "kit-core/tests",
+    "kit-api/tests",
+    "kit-media/tests",
+    "kit-pay/tests",
+]

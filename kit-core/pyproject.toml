@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kit-core"
+version = "0.1.0"
+description = "Shared utilities for the Kit toolkit — Redis client, config, logging, and exceptions"
+readme = "../README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "redis>=5.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "structlog>=23.0",
+]
