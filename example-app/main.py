@@ -22,8 +22,12 @@ import uuid
 from contextlib import asynccontextmanager
 from typing import Any
 
+import os
+import pathlib
+
 import fakeredis
 from fastapi import FastAPI, Header, HTTPException, Request, Response
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 # ---------------------------------------------------------------------------
@@ -144,12 +148,22 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(
-    title="Kit API Optimization Toolkit — Demo",
-    description="Interactive demo of kit-api, kit-media, and kit-pay packages. "
-                "Uses in-memory fakeredis so no Redis server is needed.",
+    title="Bastion API",
+    description="Production-grade API optimization platform — rate limiting, "
+                "media handling, and payment processing.",
     version="0.1.0",
     lifespan=lifespan,
 )
+
+# ── Custom Documentation Page ─────────────────────────────────────────────────
+_STATIC_DIR = pathlib.Path(__file__).parent / "static"
+
+
+@app.get("/documentation", response_class=HTMLResponse, include_in_schema=False)
+def bastion_docs():
+    """Serve the custom Bastion API documentation portal."""
+    html_path = _STATIC_DIR / "docs.html"
+    return HTMLResponse(content=html_path.read_text(), status_code=200)
 
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -620,23 +634,26 @@ def charge_history(customer_id: str = "cust_123"):
 
 @app.get("/", tags=["Info"])
 def root():
-    """API overview with all available endpoint groups."""
+    """API overview — redirects to Bastion documentation."""
     return {
-        "name": "Kit API Optimization Toolkit — Demo",
-        "docs": "/docs",
+        "name": "Bastion API",
+        "version": "0.1.0",
+        "documentation": "/documentation",
+        "swagger": "/docs",
+        "redoc": "/redoc",
         "endpoints": {
-            "kit-api": {
+            "api_optimization": {
                 "rate_limiter": ["/api/rate-limit/test", "/api/rate-limit/remaining", "/api/rate-limit/reset"],
                 "circuit_breaker": ["/api/circuit/status", "/api/circuit/call", "/api/circuit/reset"],
                 "retry_engine": ["/api/retry/demo"],
                 "idempotency": ["/api/idempotent/order"],
                 "cost_tracker": ["/api/cost/record", "/api/cost/usage", "/api/cost/budget"],
             },
-            "kit-media": {
+            "media_handling": {
                 "processor": ["/media/transform", "/media/validate"],
                 "cdn_router": ["/media/cdn/resolve", "/media/cdn/all"],
             },
-            "kit-pay": {
+            "payment_processing": {
                 "webhooks": ["/pay/webhook/{provider}", "/pay/webhook/events"],
                 "subscriptions": ["/pay/subscription/create", "/pay/subscription/{id}", "/pay/subscription/{id}/transition"],
                 "budget": ["/pay/budget/set-limit", "/pay/budget/charge", "/pay/budget/status", "/pay/budget/history"],
