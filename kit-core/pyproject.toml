@@ -9,6 +9,9 @@ description = "Shared utilities for the Kit toolkit — Redis client, config, lo
 readme = "../README.md"
 requires-python = ">=3.10"
 license = "MIT"
+authors = [
+    { name = "Moniruzzaman Shawon", email = "m.zaman.djp@gmail.com" },
+]
 dependencies = [
     "redis>=5.0",
     "pydantic>=2.0",

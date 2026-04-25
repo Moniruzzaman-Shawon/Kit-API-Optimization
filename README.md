@@ -838,6 +838,14 @@ kit-api-opt/
     └── tests/
 ```
 
+## Author
+
+**Moniruzzaman Shawon**
+- Email: m.zaman.djp@gmail.com
+- GitHub: [@Moniruzzaman-Shawon](https://github.com/Moniruzzaman-Shawon)
+
 ## License
 
-MIT
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2026 Moniruzzaman Shawon

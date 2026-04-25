@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
-    { name = "Kit Team" },
+    { name = "Moniruzzaman Shawon", email = "m.zaman.djp@gmail.com" },
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -31,9 +31,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/kit"
-Documentation = "https://github.com/your-org/kit/tree/main/docs"
-Repository = "https://github.com/your-org/kit"
+Homepage = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
+Documentation = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/tree/main/docs"
+Repository = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
 
 [tool.hatch.build]
 skip-excluded-dirs = true

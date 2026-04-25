@@ -7,6 +7,10 @@ name = "kit-pay"
 version = "0.1.0"
 description = "Payment processing toolkit for idempotency, webhooks, event processing, plan state, grace periods, and budget enforcement."
 requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "Moniruzzaman Shawon", email = "m.zaman.djp@gmail.com" },
+]
 dependencies = [
     "kit-core",
     "httpx>=0.27",
