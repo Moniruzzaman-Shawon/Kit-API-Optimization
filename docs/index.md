@@ -9,6 +9,7 @@ with copy-paste examples for each package.
 - [kit-api](api.md) — API optimization tools
 - [kit-media](media.md) — Media handling
 - [kit-pay](pay.md) — Payment processing
+- [kit-data](data.md) — Data-access optimization (N+1, caching, bulkheads, replica routing)
 
 ## Architecture
 
@@ -18,7 +19,8 @@ Kit is a modular monorepo. Each package is independently installable via pip, wi
 kit-core (shared: redis, config, logging, exceptions)
   ├── kit-api (rate limiting, circuit breakers, retries)
   ├── kit-media (uploads, CDN, media processing)
-  └── kit-pay (payments, webhooks, subscriptions)
+  ├── kit-pay (payments, webhooks, subscriptions)
+  └── kit-data (N+1 batching, caching, bulkheads, replica routing)
 ```
 
 ## Configuration

@@ -4,11 +4,12 @@
 [![CI · kit-api](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-api.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-api.yml)
 [![CI · kit-media](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-media.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-media.yml)
 [![CI · kit-pay](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-pay.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-pay.yml)
+[![CI · kit-data](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-data.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-data.yml)
 [![PyPI](https://img.shields.io/pypi/v/shawonkit-api?label=pypi%20shawonkit-api)](https://pypi.org/project/shawonkit-api/)
 [![Python](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-A modular Python monorepo with **three production-grade packages** for API rate limiting, media handling, and payment processing. Each package is independently installable, backed by Redis for distributed state, and comes with framework integrations for **FastAPI** and **Django**.
+A modular Python monorepo with **four production-grade packages** for API rate limiting, media handling, payment processing, and data-access optimization. Each package is independently installable, backed by Redis for distributed state, and comes with framework integrations for **FastAPI** and **Django**.
 
 > **🚀 Live demo:** a FastAPI app exercising every component runs at **[the demo URL](#example-app)** — open `/docs` for an interactive Swagger UI. Deploy your own in one click (see [Example App](#example-app)).
 
@@ -38,6 +39,11 @@ A modular Python monorepo with **three production-grade packages** for API rate 
   - [Plan State Manager](#4-plan-state-manager)
   - [Grace Handler](#5-grace-handler)
   - [Budget Enforcer](#6-budget-enforcer)
+- [Package 4: kit-data — Data-Access Optimization](#package-4-kit-data--data-access-optimization)
+  - [Batch Loader (N+1)](#1-batch-loader-n1)
+  - [Cache (stampede-safe)](#2-cache-stampede-safe)
+  - [Concurrency Limiter](#3-concurrency-limiter)
+  - [Replica Router](#4-replica-router)
 - [Shared: kit-core](#shared-kit-core)
 - [Example App](#example-app)
 - [Running Tests](#running-tests)
@@ -51,10 +57,11 @@ A modular Python monorepo with **three production-grade packages** for API rate 
 kit-core (shared: Redis client, config, structured logging, exceptions)
   ├── kit-api     pip install shawonkit-api
   ├── kit-media   pip install shawonkit-media
-  └── kit-pay     pip install shawonkit-pay
+  ├── kit-pay     pip install shawonkit-pay
+  └── kit-data    pip install shawonkit-data
 ```
 
-All three packages depend on `kit-core` (auto-installed). Each uses Redis for distributed state management — rate limit counters, circuit breaker state, upload progress, subscription state, etc.
+All four packages depend on `kit-core` (auto-installed). Each uses Redis for distributed state management — rate limit counters, circuit breaker state, upload progress, subscription state, cached reads, etc.
 
 ## Quick Start
 
@@ -70,6 +77,7 @@ All three packages depend on `kit-core` (auto-installed). Each uses Redis for di
 pip install shawonkit-api
 pip install shawonkit-media
 pip install shawonkit-pay
+pip install shawonkit-data
 
 # With optional provider adapters
 pip install shawonkit-api[fastapi]          # FastAPI middleware
@@ -693,6 +701,77 @@ for charge in history:
 
 ---
 
+## Package 4: kit-data — Data-Access Optimization
+
+**Install:** `pip install shawonkit-data` &nbsp;(imported as `kit_data`)
+
+Four tools for the data tier — **ORM-agnostic**: you pass a plain loader/fetch function (SQLAlchemy,
+Django ORM, raw SQL, an HTTP API) and kit-data adds the batching, caching, and concurrency control
+around it.
+
+### 1. Batch Loader (N+1)
+
+Coalesce many single-key loads into one batched fetch — the direct fix for the N+1 problem.
+
+```python
+from kit_data import BatchLoader
+
+loader = BatchLoader(lambda ids: {u.id: u for u in db.users(id__in=ids)})
+authors = loader.load_many([post.author_id for post in posts])  # ONE query, not N
+one = loader.load(42)                                            # served from cache
+```
+
+### 2. Cache (stampede-safe)
+
+Cache-aside over Redis with **single-flight** stampede protection: when many workers request the
+same missing key at once, only one recomputes it and the rest read the cached result.
+
+```python
+from kit_data import Cache, cached
+
+cache = Cache(redis, namespace="profiles", default_ttl=300)
+profile = cache.get_or_set(f"user:{uid}", lambda: load_profile(uid), ttl=600)
+cache.delete(f"user:{uid}")  # invalidate
+
+@cached(ttl=60, redis=redis)
+def expensive(query: str) -> dict:
+    return run_report(query)
+```
+
+### 3. Concurrency Limiter
+
+A bulkhead: cap the number of concurrent expensive operations across all workers so a burst can't
+exhaust the database.
+
+```python
+from kit_data import ConcurrencyLimiter, ConcurrencyLimitExceeded
+
+limiter = ConcurrencyLimiter(redis, name="report-gen", max_concurrent=10)
+try:
+    with limiter.slot():
+        build_expensive_report()
+except ConcurrencyLimitExceeded:
+    return 503  # shed load instead of overwhelming the DB
+```
+
+### 4. Replica Router
+
+Client-side load balancing across database **read-replicas** — weighted or round-robin selection,
+with automatic failover and health recovery.
+
+```python
+from kit_data import Replica, ReplicaRouter
+
+router = ReplicaRouter([
+    Replica("replica-a", engine_a, weight=2),
+    Replica("replica-b", engine_b, weight=1),
+], strategy="weighted")
+
+rows = router.run(lambda engine: engine.execute("SELECT ..."))  # failover on error
+```
+
+---
+
 ## Shared: kit-core
 
 `kit-core` is auto-installed with any kit package. It provides:
@@ -797,9 +876,9 @@ Then open **http://localhost:8000/docs** for the interactive Swagger UI where yo
 # Install test dependencies
 pip install pytest pytest-asyncio fakeredis
 
-# Run all tests (82 tests)
-PYTHONPATH=kit-core:kit-api:kit-media:kit-pay \
-  pytest kit-core/tests/ kit-api/tests/ kit-media/tests/ kit-pay/tests/ -v \
+# Run all tests (112 tests)
+PYTHONPATH=kit-core:kit-api:kit-media:kit-pay:kit-data \
+  pytest kit-core/tests/ kit-api/tests/ kit-media/tests/ kit-pay/tests/ kit-data/tests/ -v \
   --override-ini="asyncio_mode=auto"
 ```
 

@@ -3,15 +3,16 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "kit"
+name = "shawonkit-data"
 version = "0.1.0"
-description = "API optimization toolkit — rate limiting, media handling, and payment processing"
+description = "Data-access optimization toolkit — batch loading (N+1), caching with stampede protection, and concurrency limiting."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
     { name = "Moniruzzaman Shawon", email = "m.zaman.djp@gmail.com" },
 ]
+keywords = ["dataloader", "n+1", "cache", "stampede", "bulkhead", "redis", "orm"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
@@ -21,39 +22,23 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries",
+    "Topic :: Database",
+    "Typing :: Typed",
 ]
-
 dependencies = [
     "shawonkit-core",
-    "shawonkit-api",
-    "shawonkit-media",
-    "shawonkit-pay",
-    "shawonkit-data",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-asyncio>=0.23", "fakeredis>=2"]
 
 [project.urls]
 Homepage = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
 Documentation = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/tree/main/docs"
 Repository = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
+Issues = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/issues"
 
-[tool.hatch.build]
-skip-excluded-dirs = true
-
-[tool.ruff]
-target-version = "py310"
-line-length = 100
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "N", "UP", "B", "SIM"]
-# Domain exceptions (CircuitOpen, RateLimitExceeded, IdempotencyConflict) are part
-# of the public API and intentionally not suffixed with "Error".
-ignore = ["N818"]
-
-[tool.pytest.ini_options]
-testpaths = [
-    "kit-core/tests",
-    "kit-api/tests",
-    "kit-media/tests",
-    "kit-pay/tests",
-    "kit-data/tests",
-]
+# Distribution name (shawonkit-data) differs from the import package (kit_data),
+# so tell hatchling which directory to ship.
+[tool.hatch.build.targets.wheel]
+packages = ["kit_data"]
