@@ -1,0 +1,10 @@
+# One-click deploy of the live demo to Render (https://render.com).
+# In the Render dashboard: New → Blueprint → point at this repo. Free tier, Docker, no Redis needed.
+services:
+  - type: web
+    name: kit-demo
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /docs
+    autoDeploy: true

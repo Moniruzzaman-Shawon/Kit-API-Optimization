@@ -1,6 +1,16 @@
 # Kit — API Optimization Toolkit
 
+[![CI · kit-core](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-core.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-core.yml)
+[![CI · kit-api](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-api.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-api.yml)
+[![CI · kit-media](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-media.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-media.yml)
+[![CI · kit-pay](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-pay.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-pay.yml)
+[![PyPI](https://img.shields.io/pypi/v/kit-api?label=pypi%20kit-api)](https://pypi.org/project/kit-api/)
+[![Python](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 A modular Python monorepo with **three production-grade packages** for API rate limiting, media handling, and payment processing. Each package is independently installable, backed by Redis for distributed state, and comes with framework integrations for **FastAPI** and **Django**.
+
+> **🚀 Live demo:** a FastAPI app exercising every component runs at **[the demo URL](#example-app)** — open `/docs` for an interactive Swagger UI. Deploy your own in one click (see [Example App](#example-app)).
 
 ---
 
@@ -60,9 +70,6 @@ All three packages depend on `kit-core` (auto-installed). Each uses Redis for di
 pip install kit-api
 pip install kit-media
 pip install kit-pay
-
-# Or install everything at once
-pip install kit
 
 # With optional provider adapters
 pip install kit-api[fastapi]          # FastAPI middleware
@@ -712,8 +719,24 @@ redis = RedisClient.get_instance(config.redis_url)
 ## Example App
 
 A fully working FastAPI app that demonstrates all three packages is included at `example-app/main.py`.
+It runs on `fakeredis` (in-memory), so it needs **no external services** to try.
 
-### Running the example
+### Deploy your own (one click)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization)
+
+The repo ships a root `Dockerfile` and `render.yaml`; Render builds the image and serves the demo
+on its free tier. The same Docker image runs on Fly.io, Railway, or any container host.
+
+### Run with Docker
+
+```bash
+docker build -t kit-demo .
+docker run -p 8000:8000 kit-demo
+# open http://localhost:8000/docs
+```
+
+### Run from source
 
 ```bash
 cd Kit-API-Optimization
@@ -727,6 +750,11 @@ PYTHONPATH=kit-core:kit-api:kit-media:kit-pay:example-app \
 ```
 
 Then open **http://localhost:8000/docs** for the interactive Swagger UI where you can test every endpoint.
+
+> **Note:** the demo runs the real `kit-api` / `kit-media` / `kit-pay` code for circuit breaking,
+> retries, idempotency, cost tracking, webhooks, plan state, and budgets. The rate-limit endpoints
+> use a simplified non-Lua limiter because `fakeredis` can't execute the atomic Lua script — point
+> the app at a real Redis (e.g. Upstash) to exercise the production `RateLimiter`.
 
 ### Available demo endpoints
 

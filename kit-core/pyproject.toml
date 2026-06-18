@@ -6,11 +6,23 @@ build-backend = "hatchling.build"
 name = "kit-core"
 version = "0.1.0"
 description = "Shared utilities for the Kit toolkit — Redis client, config, logging, and exceptions"
-readme = "../README.md"
+readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
     { name = "Moniruzzaman Shawon", email = "m.zaman.djp@gmail.com" },
+]
+keywords = ["redis", "config", "logging", "utilities", "kit"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Typing :: Typed",
 ]
 dependencies = [
     "redis>=5.0",
@@ -21,3 +33,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "pytest-asyncio>=0.23", "fakeredis>=2"]
+
+[project.urls]
+Homepage = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
+Documentation = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/tree/main/docs"
+Repository = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
+Issues = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/issues"

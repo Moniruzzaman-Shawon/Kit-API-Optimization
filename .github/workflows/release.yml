@@ -1,0 +1,46 @@
+name: Release to PyPI
+
+# Publishes all four packages to PyPI when a GitHub Release is published.
+# Uses PyPI Trusted Publishing (OIDC) — no API token is stored as a secret.
+#
+# One-time setup on PyPI (per project: kit-core, kit-api, kit-media, kit-pay):
+#   PyPI → your project → Publishing → Add a "Trusted Publisher":
+#     Owner:        Moniruzzaman-Shawon
+#     Repository:   Kit-API-Optimization
+#     Workflow:     release.yml
+#     Environment:  pypi
+# (Use TestPyPI first by pointing the publish step at the test repository.)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [kit-core, kit-api, kit-media, kit-pay]
+    environment: pypi
+    permissions:
+      id-token: write          # required for trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build ${{ matrix.package }}
+        run: |
+          python -m pip install --upgrade build
+          python -m build --outdir dist ${{ matrix.package }}
+
+      - name: Publish ${{ matrix.package }} to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist

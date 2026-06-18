@@ -6,10 +6,24 @@ build-backend = "hatchling.build"
 name = "kit-pay"
 version = "0.1.0"
 description = "Payment processing toolkit for idempotency, webhooks, event processing, plan state, grace periods, and budget enforcement."
+readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
     { name = "Moniruzzaman Shawon", email = "m.zaman.djp@gmail.com" },
+]
+keywords = ["payments", "webhooks", "stripe", "paddle", "subscriptions", "idempotency", "redis"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Office/Business :: Financial",
+    "Typing :: Typed",
 ]
 dependencies = [
     "kit-core",
@@ -20,3 +34,9 @@ dependencies = [
 stripe = ["stripe>=8.0"]
 paddle = ["paddle-python-sdk>=1.0"]
 dev = ["pytest>=7", "pytest-asyncio>=0.23", "fakeredis>=2"]
+
+[project.urls]
+Homepage = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
+Documentation = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/tree/main/docs"
+Repository = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
+Issues = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/issues"
