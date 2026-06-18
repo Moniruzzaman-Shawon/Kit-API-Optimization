@@ -3,7 +3,7 @@
 Tools for direct-to-cloud uploads, CDN delivery, and media processing — so large files never
 proxy through your app server.
 
-**Install:** `pip install kit-media` (storage adapters: `kit-media[s3]`, `kit-media[gcs]`, `kit-media[r2]`, or `kit-media[all]`)
+**Install:** `pip install shawonkit-media` (storage adapters: `shawonkit-media[s3]`, `shawonkit-media[gcs]`, `shawonkit-media[r2]`, or `shawonkit-media[all]`)
 
 ← Back to [docs index](index.md) · Problem-oriented walkthrough in the [Usage Guide](guide.md) ·
 Full reference in the [README](../README.md)

@@ -1,19 +1,21 @@
-# kit-api
+# shawonkit-api
 
-API optimization toolkit providing rate limiting, circuit breaking, retries, idempotency enforcement, and cost tracking. Built on top of `kit-core`.
+API optimization toolkit providing rate limiting, circuit breaking, retries, idempotency enforcement, and cost tracking. Built on top of `shawonkit-core`.
+
+> Installed as `shawonkit-api`, imported as `kit_api`.
 
 ## Installation
 
 ```bash
-pip install kit-api
+pip install shawonkit-api
 ```
 
 With framework extras:
 
 ```bash
-pip install kit-api[django]
-pip install kit-api[fastapi]
-pip install kit-api[celery]
+pip install shawonkit-api[django]
+pip install shawonkit-api[fastapi]
+pip install shawonkit-api[celery]
 ```
 
 ## Usage

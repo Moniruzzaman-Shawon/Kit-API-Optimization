@@ -1,17 +1,19 @@
-# kit-media
+# shawonkit-media
 
 Media handling toolkit for Python APIs — presigned URLs, chunked uploads, CDN routing, and media processing.
+
+> Installed as `shawonkit-media`, imported as `kit_media`.
 
 ## Install
 
 ```bash
-pip install kit-media
+pip install shawonkit-media
 
 # With cloud provider adapters
-pip install kit-media[s3]
-pip install kit-media[gcs]
-pip install kit-media[r2]
-pip install kit-media[all]
+pip install shawonkit-media[s3]
+pip install shawonkit-media[gcs]
+pip install shawonkit-media[r2]
+pip install shawonkit-media[all]
 ```
 
 ## Usage

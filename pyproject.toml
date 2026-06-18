@@ -24,10 +24,10 @@ classifiers = [
 ]
 
 dependencies = [
-    "kit-core",
-    "kit-api",
-    "kit-media",
-    "kit-pay",
+    "shawonkit-core",
+    "shawonkit-api",
+    "shawonkit-media",
+    "shawonkit-pay",
 ]
 
 [project.urls]

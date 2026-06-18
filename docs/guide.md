@@ -36,14 +36,14 @@ redis = fakeredis.FakeRedis(decode_responses=True)
 ## Install
 
 ```bash
-pip install kit-api      # API hardening
-pip install kit-media    # uploads, CDN, processing
-pip install kit-pay      # payments, webhooks, subscriptions
+pip install shawonkit-api      # API hardening
+pip install shawonkit-media    # uploads, CDN, processing
+pip install shawonkit-pay      # payments, webhooks, subscriptions
 # kit-core (Redis client, config, logging, exceptions) is pulled in automatically
 ```
 
-Optional integrations: `kit-api[fastapi]`, `kit-api[django]`, `kit-api[celery]`,
-`kit-media[s3|gcs|r2]`, `kit-pay[stripe|paddle]`.
+Optional integrations: `shawonkit-api[fastapi]`, `shawonkit-api[django]`, `shawonkit-api[celery]`,
+`shawonkit-media[s3|gcs|r2]`, `shawonkit-pay[stripe|paddle]`.
 
 ---
 

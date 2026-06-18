@@ -3,7 +3,7 @@
 Tools for hardening an API against overload, failures, and duplicate requests. All state is
 stored in Redis, so guarantees hold across multiple workers/pods.
 
-**Install:** `pip install kit-api` (optional: `kit-api[fastapi]`, `kit-api[django]`, `kit-api[celery]`)
+**Install:** `pip install shawonkit-api` (optional: `shawonkit-api[fastapi]`, `shawonkit-api[django]`, `shawonkit-api[celery]`)
 
 ← Back to [docs index](index.md) · Problem-oriented walkthrough in the [Usage Guide](guide.md) ·
 Full reference in the [README](../README.md)

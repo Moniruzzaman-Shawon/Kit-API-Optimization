@@ -1,17 +1,19 @@
-# kit-pay
+# shawonkit-pay
 
 Payment processing toolkit providing idempotency, webhook handling, event processing, subscription plan state management, grace periods, and budget enforcement.
+
+> Installed as `shawonkit-pay`, imported as `kit_pay`.
 
 ## Installation
 
 ```bash
-pip install kit-pay
+pip install shawonkit-pay
 
 # With Stripe support
-pip install kit-pay[stripe]
+pip install shawonkit-pay[stripe]
 
 # With Paddle support
-pip install kit-pay[paddle]
+pip install shawonkit-pay[paddle]
 ```
 
 ## Quick start

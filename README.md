@@ -4,7 +4,7 @@
 [![CI · kit-api](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-api.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-api.yml)
 [![CI · kit-media](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-media.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-media.yml)
 [![CI · kit-pay](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-pay.yml/badge.svg)](https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/actions/workflows/ci-pay.yml)
-[![PyPI](https://img.shields.io/pypi/v/kit-api?label=pypi%20kit-api)](https://pypi.org/project/kit-api/)
+[![PyPI](https://img.shields.io/pypi/v/shawonkit-api?label=pypi%20shawonkit-api)](https://pypi.org/project/shawonkit-api/)
 [![Python](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -49,9 +49,9 @@ A modular Python monorepo with **three production-grade packages** for API rate 
 
 ```
 kit-core (shared: Redis client, config, structured logging, exceptions)
-  ├── kit-api     pip install kit-api
-  ├── kit-media   pip install kit-media
-  └── kit-pay     pip install kit-pay
+  ├── kit-api     pip install shawonkit-api
+  ├── kit-media   pip install shawonkit-media
+  └── kit-pay     pip install shawonkit-pay
 ```
 
 All three packages depend on `kit-core` (auto-installed). Each uses Redis for distributed state management — rate limit counters, circuit breaker state, upload progress, subscription state, etc.
@@ -66,21 +66,25 @@ All three packages depend on `kit-core` (auto-installed). Each uses Redis for di
 ### Installation
 
 ```bash
-# Install individual packages (kit-core is auto-installed as dependency)
-pip install kit-api
-pip install kit-media
-pip install kit-pay
+# Install individual packages (shawonkit-core is auto-installed as dependency)
+pip install shawonkit-api
+pip install shawonkit-media
+pip install shawonkit-pay
 
 # With optional provider adapters
-pip install kit-api[fastapi]          # FastAPI middleware
-pip install kit-api[django]           # Django middleware
-pip install kit-api[celery]           # Celery integration
-pip install kit-media[s3]             # AWS S3 adapter
-pip install kit-media[gcs]            # Google Cloud Storage adapter
-pip install kit-media[r2]             # Cloudflare R2 adapter
-pip install kit-pay[stripe]           # Stripe adapter
-pip install kit-pay[paddle]           # Paddle adapter
+pip install shawonkit-api[fastapi]          # FastAPI middleware
+pip install shawonkit-api[django]           # Django middleware
+pip install shawonkit-api[celery]           # Celery integration
+pip install shawonkit-media[s3]             # AWS S3 adapter
+pip install shawonkit-media[gcs]            # Google Cloud Storage adapter
+pip install shawonkit-media[r2]             # Cloudflare R2 adapter
+pip install shawonkit-pay[stripe]           # Stripe adapter
+pip install shawonkit-pay[paddle]           # Paddle adapter
 ```
+
+> **Install name vs import name:** packages are published on PyPI as `shawonkit-*`, but you import
+> them as `kit_*` — e.g. `pip install shawonkit-api` then `from kit_api.rate_limiter import RateLimiter`.
+> (This is common in Python — like `pip install scikit-learn` → `import sklearn`.)
 
 ### Connect to Redis
 
@@ -101,7 +105,7 @@ redis = fakeredis.FakeRedis(decode_responses=True)
 
 ## Package 1: kit-api — API Optimization
 
-**Install:** `pip install kit-api`
+**Install:** `pip install shawonkit-api`
 
 Five tools for hardening your API against overload, failures, and duplicate requests.
 
@@ -332,7 +336,7 @@ def process_payment(payment_id: str):
 
 ## Package 2: kit-media — Media Handling
 
-**Install:** `pip install kit-media`
+**Install:** `pip install shawonkit-media`
 
 Five tools for file uploads, CDN delivery, and media processing.
 
@@ -493,7 +497,7 @@ for segment in result.segments:
 
 ## Package 3: kit-pay — Payment Processing
 
-**Install:** `pip install kit-pay`
+**Install:** `pip install shawonkit-pay`
 
 Six tools for handling payments, webhooks, subscriptions, and budgets.
 

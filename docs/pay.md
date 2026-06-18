@@ -3,7 +3,7 @@
 Tools for safe payments, webhooks, and subscription lifecycles — idempotent, deduplicated, and
 backed by Redis.
 
-**Install:** `pip install kit-pay` (provider adapters: `kit-pay[stripe]`, `kit-pay[paddle]`)
+**Install:** `pip install shawonkit-pay` (provider adapters: `shawonkit-pay[stripe]`, `shawonkit-pay[paddle]`)
 
 ← Back to [docs index](index.md) · Problem-oriented walkthrough in the [Usage Guide](guide.md) ·
 Full reference in the [README](../README.md)

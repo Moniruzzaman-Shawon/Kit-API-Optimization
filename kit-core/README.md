@@ -1,16 +1,16 @@
 # kit-core
 
 Shared foundation for the **Kit** toolkit — the Redis client, configuration, structured logging,
-and the exception hierarchy used by [`kit-api`](https://pypi.org/project/kit-api/),
-[`kit-media`](https://pypi.org/project/kit-media/), and
-[`kit-pay`](https://pypi.org/project/kit-pay/).
+and the exception hierarchy used by [`shawonkit-api`](https://pypi.org/project/shawonkit-api/),
+[`shawonkit-media`](https://pypi.org/project/shawonkit-media/), and
+[`shawonkit-pay`](https://pypi.org/project/shawonkit-pay/).
 
 It is installed automatically as a dependency of those packages; you rarely install it directly.
 
 ## Install
 
 ```bash
-pip install kit-core
+pip install shawonkit-core
 ```
 
 ## What's inside

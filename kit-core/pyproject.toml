@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "kit-core"
+name = "shawonkit-core"
 version = "0.1.0"
 description = "Shared utilities for the Kit toolkit — Redis client, config, logging, and exceptions"
 readme = "README.md"
@@ -39,3 +39,8 @@ Homepage = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
 Documentation = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/tree/main/docs"
 Repository = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization"
 Issues = "https://github.com/Moniruzzaman-Shawon/Kit-API-Optimization/issues"
+
+# Distribution name (shawonkit-core) differs from the import package (kit_core),
+# so tell hatchling which directory to ship.
+[tool.hatch.build.targets.wheel]
+packages = ["kit_core"]
