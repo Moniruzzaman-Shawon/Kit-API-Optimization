@@ -6,10 +6,9 @@ import hashlib
 import hmac
 import json
 
-import pytest
 import fakeredis
-
-from kit_pay.webhook_receiver import WebhookReceiver, WebhookEvent, ProcessStatus
+import pytest
+from kit_pay.webhook_receiver import ProcessStatus, WebhookEvent, WebhookReceiver
 
 
 @pytest.fixture

@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import functools
 import logging
-from typing import Any, Callable, Sequence, TypeVar
+from collections.abc import Callable, Sequence
+from typing import Any, TypeVar
 
 from kit_core.exceptions import CircuitOpen
 from kit_core.redis import RedisClient

@@ -51,8 +51,8 @@ class PaymentAdapter(Protocol):
         ...
 
 
-from kit_pay.adapters.stripe_adapter import StripeAdapter
-from kit_pay.adapters.paddle_adapter import PaddleAdapter
+from kit_pay.adapters.paddle_adapter import PaddleAdapter  # noqa: E402
+from kit_pay.adapters.stripe_adapter import StripeAdapter  # noqa: E402
 
 __all__ = [
     "PaymentAdapter",

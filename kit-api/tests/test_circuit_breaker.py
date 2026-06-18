@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import pytest
 import fakeredis
-
-from kit_core.redis_client import RedisClient
-from kit_core.exceptions import CircuitOpen
+import pytest
 from kit_api.circuit_breaker import CircuitBreaker, State
+from kit_core.exceptions import CircuitOpen
+from kit_core.redis_client import RedisClient
 
 
 @pytest.fixture

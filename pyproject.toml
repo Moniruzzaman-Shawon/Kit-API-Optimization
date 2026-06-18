@@ -44,6 +44,9 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+# Domain exceptions (CircuitOpen, RateLimitExceeded, IdempotencyConflict) are part
+# of the public API and intentionally not suffixed with "Error".
+ignore = ["N818"]
 
 [tool.pytest.ini_options]
 testpaths = [

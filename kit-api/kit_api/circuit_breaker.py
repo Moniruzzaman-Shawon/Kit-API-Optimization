@@ -5,7 +5,8 @@ from __future__ import annotations
 import enum
 import functools
 import time
-from typing import Any, Callable, TypeVar
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 from kit_core.exceptions import CircuitOpen
 from kit_core.redis import RedisClient
@@ -138,7 +139,12 @@ class CircuitBreaker:
     def reset(self) -> None:
         """Force-reset the circuit to CLOSED."""
         pipe = self._redis.client.pipeline()
-        pipe.delete(self._state_key, self._failures_key, self._opened_at_key, self._half_open_calls_key)
+        pipe.delete(
+            self._state_key,
+            self._failures_key,
+            self._opened_at_key,
+            self._half_open_calls_key,
+        )
         pipe.execute()
 
 

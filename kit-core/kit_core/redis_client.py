@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import threading
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator
+from typing import Any
 
 import redis.asyncio as aioredis
 

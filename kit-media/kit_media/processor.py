@@ -97,7 +97,7 @@ class MediaProcessor:
             raise ImportError(
                 "Pillow is required for get_dimensions(). "
                 "Install it with: pip install Pillow"
-            )
+            ) from None
 
         from kit_core.exceptions import MediaError
 

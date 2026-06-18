@@ -39,7 +39,7 @@ jobs:
         run: |
           pip install -e kit-core
           pip install -e kit-api
-          pip install pytest pytest-asyncio
+          pip install pytest pytest-asyncio fakeredis
 
       - name: Run tests
         run: pytest kit-api/tests/ -v

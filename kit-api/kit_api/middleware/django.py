@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
-
 from kit_core.exceptions import IdempotencyConflict, RateLimitExceeded
 from kit_core.redis import RedisClient
 

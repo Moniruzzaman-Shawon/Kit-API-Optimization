@@ -716,7 +716,7 @@ A fully working FastAPI app that demonstrates all three packages is included at 
 ### Running the example
 
 ```bash
-cd kit-api-opt
+cd Kit-API-Optimization
 
 # Install dependencies
 pip install fastapi uvicorn fakeredis redis pydantic pydantic-settings structlog httpx
@@ -789,7 +789,7 @@ All packages share configuration via environment variables:
 ## Project Structure
 
 ```
-kit-api-opt/
+Kit-API-Optimization/
 ├── pyproject.toml                 # Workspace root
 ├── .github/workflows/             # CI per package
 │   ├── ci-core.yml

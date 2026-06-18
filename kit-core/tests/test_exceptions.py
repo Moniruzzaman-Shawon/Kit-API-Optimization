@@ -3,16 +3,15 @@
 from __future__ import annotations
 
 import pytest
-
 from kit_core.exceptions import (
-    KitError,
+    CircuitOpen,
     ConfigurationError,
     ConnectionError,
-    RateLimitExceeded,
-    CircuitOpen,
     IdempotencyConflict,
-    PaymentError,
+    KitError,
     MediaError,
+    PaymentError,
+    RateLimitExceeded,
     WebhookVerificationError,
 )
 

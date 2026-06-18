@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import functools
 import time
-from typing import Any, Callable, TypeVar
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 from kit_core.exceptions import RateLimitExceeded
 from kit_core.redis import RedisClient

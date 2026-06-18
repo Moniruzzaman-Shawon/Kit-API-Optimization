@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-import pytest
 import fakeredis
-
+import pytest
 from kit_pay.budget_enforcer import BudgetEnforcer, BudgetStatus, ChargeRecord, PaymentError
 
 

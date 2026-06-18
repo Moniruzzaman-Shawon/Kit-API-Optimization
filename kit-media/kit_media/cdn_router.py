@@ -5,10 +5,8 @@ import hmac
 import random
 import time
 from dataclasses import dataclass, field
-from typing import Any
 
 import httpx
-
 from kit_core import get_logger
 
 logger = get_logger(__name__)
@@ -44,7 +42,10 @@ class CDNRouter:
         """
         candidates = self._endpoints
         if region:
-            regional = [ep for ep in candidates if region.lower() in [r.lower() for r in ep.regions]]
+            regional = [
+                ep for ep in candidates
+                if region.lower() in [r.lower() for r in ep.regions]
+            ]
             if regional:
                 candidates = regional
 

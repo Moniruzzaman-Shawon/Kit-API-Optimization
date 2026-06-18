@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import functools
 import json
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, TypeVar
+from typing import Any, TypeVar
 
 from kit_core.exceptions import IdempotencyConflict
 from kit_core.redis import RedisClient

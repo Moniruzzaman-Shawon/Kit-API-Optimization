@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from kit_api.retry_engine import RetryEngine, retry
 
 

@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-import pytest
 import fakeredis.aioredis
-
+import pytest
 from kit_core.redis_client import RedisClient
 
 

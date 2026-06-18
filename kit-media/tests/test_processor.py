@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from kit_media.processor import FitMode, MediaProcessor, TransformSpec
 
 

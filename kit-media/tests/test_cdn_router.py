@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from kit_media.cdn_router import CDNEndpoint, CDNRouter
 
 
@@ -11,9 +10,18 @@ from kit_media.cdn_router import CDNEndpoint, CDNRouter
 def router():
     return CDNRouter(
         endpoints=[
-            CDNEndpoint(name="us-cdn", base_url="https://us.cdn.example.com", regions=["us", "ca"], weight=2),
-            CDNEndpoint(name="eu-cdn", base_url="https://eu.cdn.example.com", regions=["eu", "uk"], weight=1),
-            CDNEndpoint(name="ap-cdn", base_url="https://ap.cdn.example.com", regions=["ap", "jp"], weight=1),
+            CDNEndpoint(
+                name="us-cdn", base_url="https://us.cdn.example.com",
+                regions=["us", "ca"], weight=2,
+            ),
+            CDNEndpoint(
+                name="eu-cdn", base_url="https://eu.cdn.example.com",
+                regions=["eu", "uk"], weight=1,
+            ),
+            CDNEndpoint(
+                name="ap-cdn", base_url="https://ap.cdn.example.com",
+                regions=["ap", "jp"], weight=1,
+            ),
         ]
     )
 

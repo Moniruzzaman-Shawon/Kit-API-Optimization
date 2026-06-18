@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-import pytest
 import fakeredis
-
+import pytest
 from kit_pay.plan_state import (
+    VALID_TRANSITIONS,
+    InvalidTransitionError,
     PlanState,
     PlanStateManager,
     Subscription,
-    InvalidTransitionError,
-    VALID_TRANSITIONS,
 )
 
 

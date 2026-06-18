@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import partial
 from typing import Any
 
@@ -120,8 +120,9 @@ class GCSAdapter:
         part_number: int,
         data: bytes,
     ) -> str:
-        import httpx
         import hashlib
+
+        import httpx
 
         offset = (part_number - 1) * len(data)
         async with httpx.AsyncClient() as client:

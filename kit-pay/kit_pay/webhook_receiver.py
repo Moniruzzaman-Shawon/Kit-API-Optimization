@@ -4,9 +4,10 @@ import hashlib
 import hmac
 import json
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 from redis import Redis
 
@@ -67,10 +68,8 @@ class WebhookReceiver:
     def parse(self, payload: bytes | str, provider: str) -> WebhookEvent:
         """Parse a raw webhook payload into a normalised ``WebhookEvent``."""
         raw = payload
-        if isinstance(payload, bytes):
-            data = json.loads(payload)
-        else:
-            data = json.loads(payload)
+        # json.loads accepts both bytes and str, so no branch is needed.
+        data = json.loads(payload)
 
         event_id = self._extract_event_id(data, provider)
         event_type = self._extract_event_type(data, provider)
