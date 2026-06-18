@@ -19,3 +19,4 @@ dependencies = [
 [project.optional-dependencies]
 stripe = ["stripe>=8.0"]
 paddle = ["paddle-python-sdk>=1.0"]
+dev = ["pytest>=7", "pytest-asyncio>=0.23", "fakeredis>=2"]

@@ -20,3 +20,4 @@ dependencies = [
 django = ["django>=4.2"]
 fastapi = ["fastapi>=0.100", "starlette"]
 celery = ["celery>=5.3"]
+dev = ["pytest>=7", "pytest-asyncio>=0.23", "fakeredis>=2"]

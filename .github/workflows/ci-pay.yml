@@ -15,6 +15,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
@@ -38,8 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e kit-core
-          pip install -e kit-pay
-          pip install pytest pytest-asyncio fakeredis
+          pip install -e kit-pay[dev]
 
       - name: Run tests
         run: pytest kit-pay/tests/ -v

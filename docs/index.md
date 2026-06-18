@@ -1,5 +1,8 @@
 # Kit Documentation
 
+**New here? Start with the [Usage Guide & Use Cases](guide.md)** — what problems Kit solves,
+with copy-paste examples for each package.
+
 ## Packages
 
 - [kit-core](core.md) — Shared utilities
