@@ -44,6 +44,8 @@ A modular Python monorepo with **four production-grade packages** for API rate l
   - [Cache (stampede-safe)](#2-cache-stampede-safe)
   - [Concurrency Limiter](#3-concurrency-limiter)
   - [Replica Router](#4-replica-router)
+  - [Keyset Paginator](#5-keyset-paginator)
+  - [Counter](#6-counter)
 - [Shared: kit-core](#shared-kit-core)
 - [Example App](#example-app)
 - [Running Tests](#running-tests)
@@ -768,6 +770,35 @@ router = ReplicaRouter([
 ], strategy="weighted")
 
 rows = router.run(lambda engine: engine.execute("SELECT ..."))  # failover on error
+```
+
+### 5. Keyset Paginator
+
+Fast cursor pagination that seeks by the last-seen key instead of `OFFSET`, so it stays fast at any
+depth.
+
+```python
+from kit_data import KeysetPaginator
+
+pager = KeysetPaginator(
+    lambda after, limit: db.posts(id__gt=after, order="id", limit=limit),
+    key=lambda post: post.id,
+    page_size=50,
+)
+page = pager.page()                        # first page
+page = pager.page(after=page.next_cursor)  # next page — no slow OFFSET
+```
+
+### 6. Counter
+
+Redis-backed counters for O(1) aggregates instead of a `COUNT(*)` scan on every request.
+
+```python
+from kit_data import Counter
+
+counter = Counter(redis, namespace="metrics")
+counter.incr(f"post:{pid}:likes")          # on write
+likes = counter.get(f"post:{pid}:likes")   # O(1) read
 ```
 
 ---

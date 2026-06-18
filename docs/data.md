@@ -18,6 +18,8 @@ Full reference in the [README](../README.md)
 | `Cache` / `cached` | `kit_data.cache` | Repeated reads + **cache stampede** (single-flight) |
 | `ConcurrencyLimiter` | `kit_data.concurrency` | **Bulkhead** — cap concurrent expensive operations |
 | `ReplicaRouter` | `kit_data.replica_router` | Spread reads across DB **read-replicas** with failover |
+| `KeysetPaginator` | `kit_data.pagination` | Fast **cursor pagination** (no slow `OFFSET` scans) |
+| `Counter` | `kit_data.counter` | **O(1) aggregates** in Redis instead of `COUNT(*)` |
 
 ## Which tool for which "lots of requests" problem
 

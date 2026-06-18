@@ -71,6 +71,34 @@ router = ReplicaRouter([
 rows = router.run(lambda engine: engine.execute("SELECT ..."))
 ```
 
+### KeysetPaginator — fast cursor pagination
+
+```python
+from kit_data import KeysetPaginator
+
+# fetch(after, limit) -> rows ordered by the keyset, starting after the cursor
+pager = KeysetPaginator(
+    lambda after, limit: db.posts(id__gt=after, order="id", limit=limit),
+    key=lambda post: post.id,
+    page_size=50,
+)
+page = pager.page()                 # first page
+page = pager.page(after=page.next_cursor)   # next page (no slow OFFSET)
+for post in pager.iter_items():     # stream every row across pages
+    ...
+```
+
+### Counter — O(1) aggregates
+
+```python
+from kit_data import Counter
+
+counter = Counter(redis, namespace="metrics")
+counter.incr(f"post:{pid}:likes")          # on write
+likes = counter.get(f"post:{pid}:likes")   # O(1) read instead of COUNT(*)
+totals = counter.get_many(["a", "b"])      # one round-trip
+```
+
 ## License
 
 MIT © Moniruzzaman Shawon
